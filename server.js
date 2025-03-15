@@ -11,18 +11,27 @@ app.use(cors())
 // Criar um usuário
 app.post('/usuarios', async (req, res) => {
     try {
+        const { name, email, age } = req.body;
+
+        // Verificando se os dados foram passados corretamente
+        if (!name || !email || !age) {
+            return res.status(400).json({ error: 'Campos obrigatórios faltando' });
+        }
+
         const user = await prisma.user.create({
             data: {
-                email: req.body.email,
-                name: req.body.name,
-                age: Number(req.body.age) // Garantindo que age seja um número
-            }
+                name,
+                email,
+                age: Number(age), // Garantindo que age seja um número
+            },
         });
-        res.status(201).json(user); // Respondendo com o usuário criado
+        res.status(201).json(user);
     } catch (error) {
+        console.error("Erro ao criar usuário:", error);
         res.status(400).json({ error: 'Erro ao criar usuário' });
     }
 });
+
 
 // Listar todos os usuários
 app.get('/usuarios', async (req, res) => {
