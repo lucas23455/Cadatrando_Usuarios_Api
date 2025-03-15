@@ -84,3 +84,8 @@ app.delete('/usuarios/:id', async (req, res) => {
 app.listen(3000, () => {
     console.log("Servidor rodando em http://localhost:3000 🚀");
 });
+
+app.get('/', (req, res) => {
+    res.send("API está rodando! 🚀");
+});
+
